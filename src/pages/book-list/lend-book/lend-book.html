@@ -1,0 +1,39 @@
+
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-buttons start>
+      <button clear ion-button (click)="dismissModal()">Fermer</button>
+    </ion-buttons>
+    <ion-title>{{ book.name }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card [ngClass]="{'is-lend': book.isLend}">
+    <ion-card-header>{{ book.name }}</ion-card-header>
+    <ion-card-content>{{ book.description }}</ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button 
+                  full
+                  color="danger"
+                  [disabled]="book.isLend"
+                  (click)="onLendBook()">
+            Prêter
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button 
+                  full
+                  color="secondary"
+                  [disabled]="!book.isLend"
+                  (click)="onReturnBook()">
+            Rendre
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>
