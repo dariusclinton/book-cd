@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Cd } from '../../models/Cd';
 import { BookCdService } from '../../services/book-cd.service';
 import { LendCdPage } from './lend-cd/lend-cd';
@@ -14,13 +14,8 @@ export class CdListPage {
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              private menuCtrl: MenuController,
               private bookCdService: BookCdService,
               private modalCtrl: ModalController) {
-  }
-
-  onToggleMenu() {
-    this.menuCtrl.open();
   }
 
   ionViewWillEnter() {

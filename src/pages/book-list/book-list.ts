@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, MenuController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Book } from '../../models/Book';
 import { BookCdService } from '../../services/book-cd.service';
 import { LendBookPage } from './lend-book/lend-book';
@@ -14,7 +14,6 @@ export class BookListPage {
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
-              private menuCtrl: MenuController,
               private bookCdService: BookCdService,
               private modalCtrl: ModalController) {
   }
@@ -22,11 +21,6 @@ export class BookListPage {
   ionViewWillEnter() {
     this.booksList = this.bookCdService.booksList.slice();
   }
-
-  onToggleMenu() {
-    this.menuCtrl.open();
-  }
-
 
   onLoadBook(index: number) {
     let modal = this.modalCtrl.create(LendBookPage, {index: index});

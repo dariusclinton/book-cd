@@ -1,11 +1,9 @@
 
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-buttons start>
-      <button ion-button icon-only (click)="onToggleMenu()">
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Livres</ion-title>
   </ion-navbar>
 </ion-header>
@@ -13,12 +11,12 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-item 
+    <ion-item 
             *ngFor="let book of booksList; let i = index"
             [ngClass]="{'is-lend': book.isLend}"
             (click)="onLoadBook(i)">
       <h2>{{ book.name }}</h2>
       <p>{{ book.description }}</p>
-    </button>
+    </ion-item>
   </ion-list>
 </ion-content>
