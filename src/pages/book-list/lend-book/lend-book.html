@@ -12,7 +12,10 @@
 <ion-content padding>
   <ion-card [ngClass]="{'is-lend': book.isLend}">
     <ion-card-header>{{ book.name }}</ion-card-header>
-    <ion-card-content>{{ book.description }}</ion-card-content>
+    <ion-card-content>
+      <p>{{ book.description }}</p>
+      <em *ngIf="book.isLend">Emprunté par {{ book.borrower }}</em>
+    </ion-card-content>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -20,20 +23,29 @@
                   full
                   color="danger"
                   [disabled]="book.isLend"
-                  (click)="onLendBook()">
-            Prêter
-          </button>
+                  (click)="onLendBook()"> Emprunter </button>
         </ion-col>
         <ion-col>
           <button ion-button 
                   full
                   color="secondary"
                   [disabled]="!book.isLend"
-                  (click)="onReturnBook()">
-            Rendre
-          </button>
+                  (click)="onReturnBook()"> Rendre </button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-card>
+  <form [formGroup]="lendForm">
+    <ion-list *ngIf="book.isLend">
+      <ion-item>
+        <ion-label>Emprunteur</ion-label>
+        <ion-input type="text" formControlName="borrower"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button 
+            full 
+            (click)="onSubmitLendBook()" 
+            color="danger"
+            [disabled]="lendForm.invalid">Enregistrer</button>
+  </form>
 </ion-content>

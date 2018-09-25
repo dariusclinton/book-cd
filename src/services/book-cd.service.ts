@@ -1,58 +1,116 @@
 import { Injectable } from '@angular/core';
 import { Book } from '../models/Book';
 import { Cd } from '../models/Cd';
+import { Subject } from 'rxjs/Subject';
+import *  as firebase from 'firebase';
+import { Storage } from '@ionic/storage';
 
 
 @Injectable()
 export class BookCdService {
 
-    booksList: Book[] = [
-        {
-            name: 'The impact of One',
-            author: 'Roland Kwemain',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: false
-        },
-        {
-            name: 'La vie suspendue',
-            author: 'Helene Cardona',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: false,
-        },
-        {
-            name: 'La Reine en jaune',
-            author: 'Anders Fager',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: true
-        }
-    ];
+    booksList: Book[] = [];
 
-    cdsList: Cd[] = [
-        {
-            name: 'The Advengers',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: true
-        },
-        {
-            name: 'Spiderman',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: false
-        },
-        {
-            name: 'God of war',
-            description: 'lorem ipsum dolor sit amet sum',
-            isLend: false
-        }
-    ];
+    cdsList: Cd[] = [];
 
+    booksListSubject$ = new Subject<Book[]>();
+    cdsListSubject$ = new Subject<Cd[]>();
 
-    lendOrReturnBook(index: number) {
-        this.booksList[index].isLend = !this.booksList[index].isLend;
+    constructor(private storage: Storage) {}
+
+    emitBooks() {
+        this.booksListSubject$.next(this.booksList.slice());
     }
 
-    lendOrReturnCd(index: number) {
-        this.cdsList[index].isLend = !this.cdsList[index].isLend;
+    emitCds() {
+        this.cdsListSubject$.next(this.cdsList.slice());
     }
 
+    lendOrReturnBook(index: number, newBook: Book) {
+        this.booksList[index] = newBook;
+        this.storage.set('books', this.booksList);
+    }
 
+    lendOrReturnCd(index: number, newCd: Cd) {
+        this.cdsList[index] = newCd;
+        this.storage.set('cds', this.cdsList);
+    }
+
+    saveBooks() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('books').set(this.booksList).then(
+                (data: any) => {
+                    resolve(data);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    retreiveBooks() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('books').once('value').then(
+                (data: any) => {
+                    this.booksList = data.val();
+                    this.emitBooks();
+                    resolve('Données récupéréé avec succès!');
+                    this.storage.set('books', this.booksList);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    saveCds() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('cds').set(this.cdsList).then(
+                (data: any) => {
+                    resolve(data);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    retreiveCds() {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref('cds').once('value').then(
+                (data: any) => {
+                    this.cdsList = data.val();
+                    this.emitCds();
+                    resolve('Données récupéréé avec succès!');
+                    this.storage.set('cds', this.cdsList);
+                },
+                (error) => {
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    fetchData() {
+        this.storage.get('books').then(
+            (data) => {
+                if (data && data.length) {
+                    this.booksList = data.slice();
+                }
+                this.emitBooks();
+            }
+        );
+
+        this.storage.get('cds').then(
+            (data) => {
+                if (data && data.length) {
+                    this.cdsList = data.slice();
+                }
+                this.emitCds();
+            }
+        );
+    }
 }

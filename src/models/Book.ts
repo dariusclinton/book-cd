@@ -1,8 +1,8 @@
 export class Book {
     name: string;
-    author?: string;
     description?: string;
     isLend: boolean;
+    borrower?: string;
 
     constructor(name: string) {
         this.name = name;

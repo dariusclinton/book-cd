@@ -16,7 +16,8 @@
             [ngClass]="{'is-lend': cd.isLend}"
             (click)="onLoadCd(i)">
       <h2>{{ cd.name }}</h2>
-      <p>{{ cd.description }}</p>
+      <h3>{{ cd.description }}</h3>
+      <p *ngIf="cd.isLend">Emprunté par : {{ cd.borrower }}</p>
     </button>
   </ion-list>
 </ion-content>

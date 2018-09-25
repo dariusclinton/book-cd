@@ -8,6 +8,30 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <p>Page des réglages</p>
+<ion-content padding><ion-card>
+    <ion-card-header>Livres</ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col>
+          <button ion-button block outline color="secondary" (click)="onSaveBookList()">Enregistrer</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block outline color="secondary" (click)="onFetchBookList()">Récupérer</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>CD</ion-card-header>
+    <ion-card-content>
+      <ion-row>
+        <ion-col>
+          <button ion-button block outline color="secondary" (click)="onSaveCdList()">Enregistrer</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block outline color="secondary" (click)="onFetchCdList()">Récupérer</button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

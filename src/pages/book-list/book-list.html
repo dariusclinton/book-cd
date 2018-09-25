@@ -8,7 +8,6 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
   <ion-list>
     <ion-item 
@@ -16,7 +15,8 @@
             [ngClass]="{'is-lend': book.isLend}"
             (click)="onLoadBook(i)">
       <h2>{{ book.name }}</h2>
-      <p>{{ book.description }}</p>
+      <h3>{{ book.description }}</h3>
+      <p *ngIf="book.isLend">Emprunté par: {{ book.borrower }}</p>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -12,7 +12,10 @@
 <ion-content padding>
   <ion-card [ngClass]="{'is-lend' : cd.isLend}">
     <ion-card-header>{{ cd.name }}</ion-card-header>
-    <ion-card-content>{{ cd.description }}</ion-card-content>
+    <ion-card-content>
+      <p>{{ cd.description }}</p>
+      <em *ngIf="cd.isLend">Emprunté par {{ cd.borrower }}</em>
+    </ion-card-content>
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -20,7 +23,7 @@
                   ion-button 
                   color="danger"
                   [disabled]="cd.isLend"
-                  (click)="onLendCd()">Prêter</button>
+                  (click)="onLendCd()">Emprunter</button>
         </ion-col>
         <ion-col>
           <button full 
@@ -32,4 +35,17 @@
       </ion-row>
     </ion-grid>
   </ion-card>
+  <form [formGroup]="lendForm">
+    <ion-list *ngIf="cd.isLend">
+      <ion-item>
+        <ion-label>Emprunteur</ion-label>
+        <ion-input type="text" formControlName="borrower"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button 
+            full 
+            (click)="onSubmitLendCd()" 
+            color="danger"
+            [disabled]="lendForm.invalid">Enregistrer</button>
+  </form>
 </ion-content>
