@@ -9,9 +9,19 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class BookCdService {
 
-    booksList: Book[] = [];
+    booksList: Book[] = [
+        {
+            name: 'Book 1',
+            isLend: false    
+        }
+    ];
 
-    cdsList: Cd[] = [];
+    cdsList: Cd[] = [
+        {
+            name: 'CD 1',
+            isLend: false    
+        }
+    ];
 
     booksListSubject$ = new Subject<Book[]>();
     cdsListSubject$ = new Subject<Cd[]>();
@@ -54,6 +64,7 @@ export class BookCdService {
             firebase.database().ref('books').once('value').then(
                 (data: any) => {
                     this.booksList = data.val();
+                    console.log(this.booksList);
                     this.emitBooks();
                     resolve('Données récupéréé avec succès!');
                     this.storage.set('books', this.booksList);
